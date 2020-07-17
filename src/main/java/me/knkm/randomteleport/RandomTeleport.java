@@ -22,22 +22,25 @@ public final class RandomTeleport extends JavaPlugin implements Listener {
 
     @EventHandler
     public void onCMIPlayerTeleport(CMIPlayerTeleportEvent event) {
-        if (event.getType() == Teleportations.TeleportType.randomTp && event.getSafe().getTpCondition() == Teleportations.TpCondition.Good) {
-            Location to = event.getTo();
-            event.setCancelled(true);
-            if (event.isAsynchronous()) {
-                loadNearby(to);
-                event.getPlayer().teleport(to);
-            } else {
-                Bukkit.getScheduler().runTaskAsynchronously(this, () ->{
-                    loadNearby(to);
-                    Bukkit.getScheduler().runTask(this, () -> {
-                        event.getPlayer().teleportAsync(to);
-                    });
-                });
-            }
+        if (event.getType() != Teleportations.TeleportType.randomTp) {
+            return;
         }
-
+        if (event.getSafe().getTpCondition() != Teleportations.TpCondition.Good){
+            return;
+        }
+        Location to = event.getTo();
+        event.setCancelled(true);
+        if (event.isAsynchronous()) {
+            loadNearby(to);
+            event.getPlayer().teleport(to);
+        } else {
+            Bukkit.getScheduler().runTaskAsynchronously(this, () -> {
+                loadNearby(to);
+                Bukkit.getScheduler().runTask(this, () -> {
+                    event.getPlayer().teleportAsync(to);
+                });
+            });
+        }
     }
 
     private void loadNearby(Location location) {
@@ -47,7 +50,7 @@ public final class RandomTeleport extends JavaPlugin implements Listener {
             for (int j = -4; j < 5; j++) {
                 int delz = j * 16;
                 Location l1 = new Location(location.getWorld(), location.getX() + delx, location.getY(), location.getZ() + delz);
-                CompletableFuture<Chunk> chunk = l1.getWorld().getChunkAtAsync(l1,true);
+                CompletableFuture<Chunk> chunk = l1.getWorld().getChunkAtAsync(l1, true);
                 asyncChunk.add(chunk);
             }
         }
@@ -69,7 +72,6 @@ public final class RandomTeleport extends JavaPlugin implements Listener {
                 flag = false;
             }
         }
-        System.out.println(flag);
         return flag;
     }
 }
