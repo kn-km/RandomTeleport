@@ -1,0 +1,7 @@
+name: RandomTeleport
+version: ${project.version}
+main: me.knkm.randomteleport.RandomTeleport
+api-version: 1.16
+authors: [Hanssc]
+depend: [CMI]
+description: A Random Teleport Plugin
