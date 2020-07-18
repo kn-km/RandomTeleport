@@ -45,9 +45,9 @@ public final class RandomTeleport extends JavaPlugin implements Listener {
 
     private void loadNearby(Location location) {
         List<CompletableFuture<Chunk>> asyncChunk = new ArrayList<>();
-        for (int i = -4; i < 5; i++) {
+        for (int i = -5; i < 6; i++) {
             int delx = i * 16;
-            for (int j = -4; j < 5; j++) {
+            for (int j = -5; j < 6; j++) {
                 int delz = j * 16;
                 Location l1 = new Location(location.getWorld(), location.getX() + delx, location.getY(), location.getZ() + delz);
                 CompletableFuture<Chunk> chunk = l1.getWorld().getChunkAtAsync(l1, true);
